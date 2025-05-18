@@ -1,17 +1,19 @@
 # 90s_tube
 linux daemon that plays 90s tv. for kids!
 
-## TODOs
-1. Flash Rasberry Pi OS Lite onto 512gb microSD card
+## Install Steps for fresh SD Card 
+1. Flash Rasberry Pi OS Lite onto microSD card
   - NOTE: Do not eject drive after writing
   - set ssh and username/password
-2. Copy dev videos onto card in media
-2. Boot card with wifi adapter
-3. install supervisor and vlc
+2. Copy videos onto card in media
+  - Shows should live in `/media/shows/name_of_show/*.mp4`
+  - Commercials should lve in `/media/commercials/*.mp4`
+  - Only H.264/AVC encode .mp4 files have been tested.
+3. Boot card in pi, connect wifi adapter
+4. install supervisor and vlc
 - sudo apt-get update
-- sudo apt install python3-pip vlc
-4. Set configuration files
-
+- sudo apt install python3-pip vlc supervisor
+5. Set audio configuration files
 /etc/asound.conf:
 ```
 pcm.!default {
@@ -34,10 +36,12 @@ hdmi_force_hotplug=1
 hdmi_force_edid_audio=1
 ```
 NOTE: vlc needs to be prefixed with "--aout=alsa --alsa-audio-device=hdmi:CARD=vc4hdmi,DEV=0"
-4. configure startup script
-5. dev startup script (could do via ssh) c1254d4b860c
- - https://claude.ai/chat/6d93c9b8-8f65-496c-ae5d-c1254d4b860c  
-6. delete dev videos
-7. Clone disk image
-8. Drop in shows
-9. Try it out!
+6. configure startup script
+- set supervisord.conf in /etc/supervisor
+- sudo systemctl enable supervisor
+- sudo systemctl start supervisor
+- sudo supervisorctl reread
+- sudo supervisorctrl update
+7. Copy service.py to ~ 
+8. Clone disk image for easier install next time
+9. Plug it in!
